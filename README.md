@@ -161,9 +161,7 @@ task-manager/
 │   ├── profile/                     # view.html, edit.html, change_password.html
 │   ├── errors/                       # 404.html, 403.html, 500.html
 │   └── partials/                      # _flash.html, _empty_state.html
-│
-├── instance/                  # Instance-specific config (gitignored)
-└── database/                  # Migration scripts / seed data (optional)
+
 ```
 
 ---
