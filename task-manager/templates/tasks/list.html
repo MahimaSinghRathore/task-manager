@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}My Tasks — TaskFlow{% endblock %}
+{% block page_title %}<h1>My Tasks</h1>{% endblock %}
+
+{% block content %}
+
+<div class="glass-card filter-panel">
+    <form method="GET" class="filter-form" id="filterForm">
+        <div class="filter-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="q" value="{{ search_term }}" placeholder="Search tasks by title..." class="form-control">
+        </div>
+
+        <select name="status" class="form-select filter-select">
+            <option value="">All Statuses</option>
+            {% for s in status_choices %}
+            <option value="{{ s }}" {% if status_filter == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="priority" class="form-select filter-select">
+            <option value="">All Priorities</option>
+            {% for p in priority_choices %}
+            <option value="{{ p }}" {% if priority_filter == p %}selected{% endif %}>{{ p }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="category" class="form-select filter-select">
+            <option value="">All Categories</option>
+            {% for c in category_choices %}
+            <option value="{{ c }}" {% if category_filter == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="sort" class="form-select filter-select">
+            <option value="due_date_asc" {% if sort_by == 'due_date_asc' %}selected{% endif %}>Due Date ↑</option>
+            <option value="due_date_desc" {% if sort_by == 'due_date_desc' %}selected{% endif %}>Due Date ↓</option>
+            <option value="priority" {% if sort_by == 'priority' %}selected{% endif %}>Priority (High → Low)</option>
+            <option value="created_desc" {% if sort_by == 'created_desc' %}selected{% endif %}>Newest First</option>
+            <option value="title_asc" {% if sort_by == 'title_asc' %}selected{% endif %}>Title (A–Z)</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary"><i class="bi bi-funnel-fill"></i> Apply</button>
+        <a href="{{ url_for('tasks.list_tasks') }}" class="btn btn-outline-secondary">Reset</a>
+        <a href="{{ url_for('tasks.create_task') }}" class="btn btn-success ms-auto"><i class="bi bi-plus-lg"></i> New Task</a>
+    </form>
+</div>
+
+{% if tasks %}
+<div class="table-responsive glass-card task-table-wrapper">
+    <table class="table task-table align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th class="d-none d-md-table-cell">Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th class="d-none d-sm-table-cell">Due Date</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr class="{% if task.is_overdue %}row-overdue{% endif %}">
+                <td>
+                    <a href="{{ url_for('tasks.view_task', task_id=task.id) }}" class="task-title-link">{{ task.title }}</a>
+                </td>
+                <td class="d-none d-md-table-cell">{{ task.category }}</td>
+                <td><span class="badge bg-{{ task.priority_badge_class }}">{{ task.priority }}</span></td>
+                <td>
+                    <span class="badge bg-{{ task.status_badge_class }} status-toggle" data-task-id="{{ task.id }}" role="button">
+                        {{ task.status }}
+                    </span>
+                </td>
+                <td class="d-none d-sm-table-cell">
+                    {% if task.due_date %}
+                        {{ task.due_date.strftime('%b %d, %Y') }}
+                        {% if task.is_overdue %}<span class="text-danger small d-block">Overdue</span>{% endif %}
+                    {% else %}
+                        <span class="text-muted">—</span>
+                    {% endif %}
+                </td>
+                <td class="text-end">
+                    <a href="{{ url_for('tasks.edit_task', task_id=task.id) }}" class="btn btn-sm btn-icon" title="Edit">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <form method="POST" action="{{ url_for('tasks.delete_task', task_id=task.id) }}" class="d-inline delete-task-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-sm btn-icon text-danger" title="Delete">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if pagination.pages > 1 %}
+<nav class="pagination-wrapper" aria-label="Task pagination">
+    <ul class="pagination">
+        <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('tasks.list_tasks', page=pagination.prev_num, q=search_term, status=status_filter, priority=priority_filter, category=category_filter, sort=sort_by) }}">Previous</a>
+        </li>
+        {% for p in pagination.iter_pages() %}
+        <li class="page-item {% if p == pagination.page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('tasks.list_tasks', page=p, q=search_term, status=status_filter, priority=priority_filter, category=category_filter, sort=sort_by) }}">{{ p }}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('tasks.list_tasks', page=pagination.next_num, q=search_term, status=status_filter, priority=priority_filter, category=category_filter, sort=sort_by) }}">Next</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="glass-card">
+    {% set empty_message = "No tasks match your filters. Try adjusting them or create a new task." %}
+    {% include 'partials/_empty_state.html' with context %}
+</div>
+{% endif %}
+
+{% endblock %}

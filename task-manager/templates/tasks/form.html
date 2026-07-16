@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — TaskFlow{% endblock %}
+{% block page_title %}<h1>{{ title }}</h1>{% endblock %}
+
+{% block content %}
+<div class="glass-card form-panel">
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else ""), placeholder="e.g. Finish quarterly report") }}
+            {% for error in form.title.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else ""), rows="4", placeholder="Optional details...") }}
+            {% for error in form.description.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                {{ form.category.label(class="form-label") }}
+                {{ form.category(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+                {{ form.priority.label(class="form-label") }}
+                {{ form.priority(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+                {{ form.status.label(class="form-label") }}
+                {{ form.status(class="form-select") }}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {{ form.due_date.label(class="form-label") }}
+            {{ form.due_date(class="form-control" + (" is-invalid" if form.due_date.errors else ""), type="date") }}
+            {% for error in form.due_date.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-primary btn-lg") }}
+            {% if task %}
+            <a href="{{ url_for('tasks.view_task', task_id=task.id) }}" class="btn btn-outline-secondary btn-lg">Cancel</a>
+            {% else %}
+            <a href="{{ url_for('tasks.list_tasks') }}" class="btn btn-outline-secondary btn-lg">Cancel</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

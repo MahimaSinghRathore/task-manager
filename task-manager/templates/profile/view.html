@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}My Profile — TaskFlow{% endblock %}
+{% block page_title %}<h1>My Profile</h1>{% endblock %}
+
+{% block content %}
+<div class="profile-grid">
+    <div class="glass-card profile-card">
+        {% if current_user.avatar_filename %}
+            <img src="{{ url_for('static', filename='images/uploads/' ~ current_user.avatar_filename) }}" class="profile-avatar" alt="Avatar">
+        {% else %}
+            <div class="profile-avatar profile-avatar-placeholder">{{ current_user.username[0]|upper }}</div>
+        {% endif %}
+
+        <h3>{{ current_user.full_name or current_user.username }}</h3>
+        <p class="text-muted">@{{ current_user.username }}</p>
+        <p class="profile-email"><i class="bi bi-envelope"></i> {{ current_user.email }}</p>
+
+        {% if current_user.bio %}
+        <p class="profile-bio">{{ current_user.bio }}</p>
+        {% endif %}
+
+        <p class="profile-joined"><i class="bi bi-calendar3"></i> Joined {{ current_user.created_at.strftime('%B %Y') }}</p>
+
+        <div class="profile-actions">
+            <a href="{{ url_for('profile.edit_profile') }}" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i> Edit Profile
+            </a>
+            <a href="{{ url_for('profile.change_password') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-key"></i> Change Password
+            </a>
+        </div>
+    </div>
+
+    <div class="glass-card profile-stats-card">
+        <h3><i class="bi bi-bar-chart-line"></i> Task Statistics</h3>
+        <div class="profile-stats-grid">
+            <div class="stat-block">
+                <span class="stat-value">{{ counts.total }}</span>
+                <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-value text-secondary">{{ counts.pending }}</span>
+                <span class="stat-label">Pending</span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-value text-info">{{ counts.in_progress }}</span>
+                <span class="stat-label">In Progress</span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-value text-success">{{ counts.completed }}</span>
+                <span class="stat-label">Completed</span>
+            </div>
+            <div class="stat-block">
+                <span class="stat-value text-danger">{{ counts.overdue }}</span>
+                <span class="stat-label">Overdue</span>
+            </div>
+        </div>
+
+        {% set total = counts.total if counts.total > 0 else 1 %}
+        <div class="mt-4">
+            <div class="d-flex justify-content-between small mb-1">
+                <span>Completion Rate</span>
+                <span>{{ ((counts.completed / total) * 100) | round | int }}%</span>
+            </div>
+            <div class="progress custom-progress">
+                <div class="progress-bar" style="width: {{ ((counts.completed / total) * 100) | round | int }}%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

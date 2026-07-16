@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}TaskFlow — Organize. Focus. Achieve.{% endblock %}
+
+{% block guest_content %}
+<div class="landing">
+    <nav class="landing-nav">
+        <div class="landing-brand">
+            <i class="bi bi-check2-square"></i> TaskFlow
+        </div>
+        <div class="landing-nav-actions">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-sm">Log In</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-sm">Sign Up Free</a>
+        </div>
+    </nav>
+
+    <section class="landing-hero">
+        <div class="landing-hero-text">
+            <span class="badge-pill"><i class="bi bi-stars"></i> Built for focused teams &amp; individuals</span>
+            <h1>Organize your work.<br>Achieve more, stress less.</h1>
+            <p>TaskFlow is a clean, fast task manager with smart dashboards, deadline tracking, and
+               powerful filters — everything you need to stay on top of what matters.</p>
+            <div class="landing-cta">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-light">Get Started — It's Free</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-lg btn-outline-light">I have an account</a>
+            </div>
+        </div>
+        <div class="landing-hero-visual">
+            <div class="glass-card floating-card card-1">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <div><strong>Design landing page</strong><small>Completed</small></div>
+            </div>
+            <div class="glass-card floating-card card-2">
+                <i class="bi bi-clock-fill text-warning"></i>
+                <div><strong>Client review call</strong><small>Due tomorrow</small></div>
+            </div>
+            <div class="glass-card floating-card card-3">
+                <i class="bi bi-graph-up-arrow text-info"></i>
+                <div><strong>Weekly progress</strong><small>78% complete</small></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="landing-features">
+        <div class="feature-card glass-card">
+            <i class="bi bi-kanban"></i>
+            <h3>Visual Dashboards</h3>
+            <p>See totals, overdue items, and progress at a glance the moment you log in.</p>
+        </div>
+        <div class="feature-card glass-card">
+            <i class="bi bi-funnel"></i>
+            <h3>Smart Filters</h3>
+            <p>Search, filter by status/priority/category, and sort by deadline or urgency.</p>
+        </div>
+        <div class="feature-card glass-card">
+            <i class="bi bi-shield-lock"></i>
+            <h3>Private &amp; Secure</h3>
+            <p>Your tasks are yours alone — protected accounts with hashed passwords.</p>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{# partials/_flash.html: renders flash messages as data attributes; main.js converts them into Bootstrap toasts. #}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div id="flashData" class="d-none"
+             data-messages='[{% for category, message in messages %}{"category": "{{ category }}", "message": "{{ message | e }}"}{% if not loop.last %},{% endif %}{% endfor %}]'>
+        </div>
+    {% endif %}
+{% endwith %}

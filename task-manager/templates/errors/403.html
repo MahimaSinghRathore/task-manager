@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Access Denied — TaskFlow{% endblock %}
+
+{% block guest_content %}
+<div class="error-page">
+    <div class="glass-card error-card">
+        <i class="bi bi-shield-lock"></i>
+        <h1>403</h1>
+        <p>You don't have permission to access this resource.</p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="glass-card error-card">
+        <i class="bi bi-shield-lock"></i>
+        <h1>403</h1>
+        <p>You don't have permission to access this resource.</p>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
