@@ -6,16 +6,6 @@ A production-quality, full-stack task management app built with **Flask** and **
 
 ---
 
-## 📸 Screenshots
-
-> _Add screenshots here once the app is running locally._
-
-| Dashboard | Task List | Login |
-|---|---|---|
-| `screenshots/dashboard.png` | `screenshots/tasks.png` | `screenshots/login.png` |
-
----
-
 ## ✨ Features
 
 ### Authentication
