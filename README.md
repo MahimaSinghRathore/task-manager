@@ -143,14 +143,14 @@ task-manager/
 │   └── images/uploads/           # User-uploaded avatars
 │
 ├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── dashboard.html
-│   ├── auth/                      # register.html, login.html
-│   ├── tasks/                      # list.html, form.html, view.html
-│   ├── profile/                     # view.html, edit.html, change_password.html
-│   ├── errors/                       # 404.html, 403.html, 500.html
-│   └── partials/                      # _flash.html, _empty_state.html
+    ├── base.html
+    ├── index.html
+    ├── dashboard.html
+    ├── auth/                      # register.html, login.html
+    ├── tasks/                      # list.html, form.html, view.html
+    ├── profile/                     # view.html, edit.html, change_password.html
+    ├── errors/                       # 404.html, 403.html, 500.html
+    └── partials/                      # _flash.html, _empty_state.html
 
 ```
 
